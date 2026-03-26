@@ -21,6 +21,10 @@ async def split():
     cats = await mm.get_transaction_categories()
     cat_lookup = {cat['name']: cat['id'] for cat in cats['categories']}
 
+    #FIXME using to test github actions
+    print("Got here")
+    exit()
+
     with open("splits.yaml") as f:
         splits = yaml.safe_load(f)
 

@@ -1,0 +1,32 @@
+name: Monarch Split Monthly Job
+
+on:
+  schedule:
+    - cron: '0 0 1-5 * *'  # Runs at midnight UTC on the 1st–5th of every month
+  workflow_dispatch:        # Allows manual triggering from the GitHub Actions UI
+
+jobs:
+  run-monarch-split:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run monarch_split.py
+        env:
+          EMAIL: ${{ secrets.EMAIL }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          MFA: ${{ secrets.MFA }}
+        run: python monarch_split.py
