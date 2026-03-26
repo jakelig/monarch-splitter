@@ -12,18 +12,17 @@ async def split():
     dotenv.load_dotenv()
 
     mm = MonarchMoney()
+    print("Logging in...")
     await mm.login(
         email = os.getenv("EMAIL"), 
         password = os.getenv("PASSWORD"),
         mfa_secret_key = os.getenv("MFA")
     )
+    print("done.")
 
+    print("Getting transactions and categories...")
     cats = await mm.get_transaction_categories()
     cat_lookup = {cat['name']: cat['id'] for cat in cats['categories']}
-
-    #FIXME using to test github actions
-    print("Got here")
-    exit()
 
     with open("splits.yaml") as f:
         splits = yaml.safe_load(f)
@@ -39,7 +38,9 @@ async def split():
        category_ids = [cat_lookup[comp['category']] for comp in splits['components']],
        has_notes = False
     )
+    print("done.")
 
+    print("Calculating splits...")
     transactions = pl.from_dicts([
         {
             'amount': transaction['amount'],
@@ -54,15 +55,19 @@ async def split():
         (abs(pl.col('amount')) * pl.col('rate')).alias('amount'),
         pl.col('merchant').alias('merchantName')
     )
+    print("done.")
 
+    print("Getting main expense to split...")
     try:
         accounts = await mm.get_accounts()
         venmo_account = [acc for acc in accounts['accounts'] if acc['displayName'] == "Venmo"]
         venmo_account_id = venmo_account[0]['id']
+        print("done.")
     except Exception as e:
         print("Venmo account can't be found.")
         exit()
 
+    print("Applying splits...")
     venmo_expenses = await mm.get_transactions(
         start_date = start_date,
         end_date = end_date,
@@ -95,12 +100,12 @@ async def split():
                 transaction_id = main_expense['id'],
                 split_data = final_splits
             )
-            print("Completed transaction splitting.")
+            print("done.")
         except Exception as e:
-            print(f"Failed to update splits: {e}")
+            print(f"failed to update splits: {e}")
 
     else:
-        print("No transaction meets the criteria.")
+        print("no transaction meets the criteria.")
 
 if __name__ == "__main__":
     asyncio.run(split())
