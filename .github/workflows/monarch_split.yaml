@@ -29,4 +29,4 @@ jobs:
           EMAIL: ${{ secrets.EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
           MFA: ${{ secrets.MFA }}
-        run: python monarch_split.py
+        run: uv run python monarch_split.py
