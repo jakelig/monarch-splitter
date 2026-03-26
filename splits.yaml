@@ -1,0 +1,18 @@
+notes: "Roomies group split"
+threshold: 1000
+components:
+  - category: "YouTube TV"
+    merchant: "Youtube TV"
+    rate: .5
+  - category: "Gas & Electric"
+    merchant: "PECO Energy Company"
+    rate: .5
+  - category: "Gas & Electric"
+    merchant: "Philadelphia Gas Works"
+    rate: .5
+  - category: "Rent"
+    merchant: "Zillow"
+    rate: .5
+leftover:
+  category: Groceries
+  merchantName: Lindsey Kapuscinski
