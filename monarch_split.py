@@ -12,7 +12,7 @@ async def split():
     dotenv.load_dotenv()
 
     mm = MonarchMoney()
-    print("Logging in...")
+    print("Logging in...", end = "")
     await mm.login(
         email = os.getenv("EMAIL"), 
         password = os.getenv("PASSWORD"),
@@ -20,7 +20,7 @@ async def split():
     )
     print("done.")
 
-    print("Getting transactions and categories...")
+    print("Getting transactions and categories...", end = "")
     cats = await mm.get_transaction_categories()
     cat_lookup = {cat['name']: cat['id'] for cat in cats['categories']}
 
@@ -40,7 +40,7 @@ async def split():
     )
     print("done.")
 
-    print("Calculating splits...")
+    print("Calculating splits...", end = "")
     transactions = pl.from_dicts([
         {
             'amount': transaction['amount'],
@@ -55,9 +55,17 @@ async def split():
         (abs(pl.col('amount')) * pl.col('rate')).alias('amount'),
         pl.col('merchant').alias('merchantName')
     )
-    print("done.")
 
-    print("Getting main expense to split...")
+    found_cats = set(transactions['category'])
+    configured_cats = set([split['category'] for split in splits['components']])
+
+    if found_cats != configured_cats:
+        print("not all configured categories are found, quitting.")
+        return()
+    else:
+        print("done.")
+
+    print("Getting main expense to split...", end = "")
     try:
         accounts = await mm.get_accounts()
         venmo_account = [acc for acc in accounts['accounts'] if acc['displayName'] == "Venmo"]
@@ -65,9 +73,9 @@ async def split():
         print("done.")
     except Exception as e:
         print("Venmo account can't be found.")
-        exit()
+        return()
 
-    print("Applying splits...")
+    print("Applying splits...", end = "")
     venmo_expenses = await mm.get_transactions(
         start_date = start_date,
         end_date = end_date,

@@ -2,7 +2,7 @@ name: Monarch Split Monthly Job
 
 on:
   schedule:
-    - cron: '0 0 1-5 * *'  # Runs at midnight UTC on the 1st–5th of every month
+    - cron: '45 0 1-5 * *'  # Runs at midnight EST on the 1st–5th of every month
   workflow_dispatch:        # Allows manual triggering from the GitHub Actions UI
 
 jobs:
