@@ -38,7 +38,7 @@ async def split():
        category_ids = [cat_lookup[comp['category']] for comp in splits['components']],
        has_notes = False
     )
-    print(transactions)
+
     print("done.")
 
     print("Calculating splits...", end = "")
@@ -59,7 +59,8 @@ async def split():
 
     found_cats = set(transactions['category'])
     configured_cats = set([split['category'] for split in splits['components']])
-
+    print(found_cats)
+    print(configured_cats)
     if found_cats != configured_cats:
         print("not all configured categories are found, quitting.")
         return()
