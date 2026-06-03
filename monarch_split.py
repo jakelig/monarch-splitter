@@ -38,6 +38,7 @@ async def split():
        category_ids = [cat_lookup[comp['category']] for comp in splits['components']],
        has_notes = False
     )
+    print(transactions)
     print("done.")
 
     print("Calculating splits...", end = "")
