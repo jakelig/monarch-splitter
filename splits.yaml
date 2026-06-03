@@ -14,7 +14,7 @@ components:
     merchant: "Zillow"
     rate: .5
   - category: "Internet & Cable"
-    merchent: "Verizon"
+    merchant: "Verizon"
     rate: .5
 leftover:
   category: Groceries
