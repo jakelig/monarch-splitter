@@ -99,6 +99,7 @@ async def split():
         leftover_split.pop('category')
 
         final_splits = transactions[['categoryId', 'merchantName', 'amount']].to_dicts() + [leftover_split]
+        print(final_splits)
 
         try:
             await mm.update_transaction(
