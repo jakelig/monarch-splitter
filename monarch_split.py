@@ -53,7 +53,7 @@ async def split():
     ]).join(
         pl.from_dicts(splits['components']), on = ['category', 'merchant']
     ).with_columns(
-        (abs(pl.col('amount')) * pl.col('rate')).alias('amount'),
+        (abs(pl.col('amount')) * pl.col('rate')).round(2).alias('amount'),
         pl.col('merchant').alias('merchantName')
     )
 
