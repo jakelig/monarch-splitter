@@ -11,7 +11,7 @@ components:
     merchant: "Philadelphia Gas Works"
     rate: .5
   - category: "Rent"
-    merchant: "Zillow"
+    merchant: "1018 Rent"
     rate: .5
   - category: "Internet & Cable"
     merchant: "Verizon"
