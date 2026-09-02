@@ -57,6 +57,8 @@ async def split():
         pl.col('merchant').alias('merchantName')
     )
 
+    print(transactions)
+
     found_cats = set(transactions['category'])
     configured_cats = set([split['category'] for split in splits['components']])
     
